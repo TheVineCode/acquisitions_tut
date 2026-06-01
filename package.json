@@ -1,0 +1,25 @@
+{
+  "name": "acquisitions_tut",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheVineCode/acquisitions_tut.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/TheVineCode/acquisitions_tut/issues"
+  },
+  "homepage": "https://github.com/TheVineCode/acquisitions_tut#readme",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}
