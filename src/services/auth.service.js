@@ -9,16 +9,18 @@ export const hashPassword = async (password) => {
     return await bcrypt.hash(password, 10);
   } catch (e) {
     logger.error(`Error hashing the password: ${e}`);
-    throw new Error('Error hashing');
+    throw new Error('Error hashing', {
+      cause: e
+    });
   }
 };
 
 export const createUser = async ({ name, email, password, role = 'user' }) => {
   try {
-    const existingUser = db.select().from(users).where(eq(users.email, email)).limit(1);
+    const existingUser = await db.select().from(users).where(eq(users.email, email)).limit(1);
 
     if (existingUser.length > 0) {
-      throw new Error('User already exists');
+      throw new Error('User with this email already exists');
     }
 
     const password_hash = await hashPassword(password);
@@ -33,5 +35,24 @@ export const createUser = async ({ name, email, password, role = 'user' }) => {
   } catch (e) {
     logger.error(`Error creating the user: ${e}`);
     throw e;
+  }
+};
+
+export const getUserByEmail = async (email) => {
+  try {
+    const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    return user || null;
+  } catch (e) {
+    logger.error(`Error fetching user by email: ${e}`);
+    throw new Error('Error fetching user', { cause: e });
+  }
+};
+
+export const comparePassword = async (plainPassword, hashedPassword) => {
+  try {
+    return await bcrypt.compare(plainPassword, hashedPassword);
+  } catch (e) {
+    logger.error(`Error comparing passwords: ${e}`);
+    throw new Error('Error comparing passwords', { cause: e });
   }
 };
